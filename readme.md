@@ -1,3 +1,75 @@
+# DSM 7.3 / DS918+ UAS/UASP support
+
+This fork adds experimental DSM 7.3-86009 support for Apollo Lake systems.
+
+## Tested system
+
+- Synology DS918+
+- Apollo Lake
+- DSM 7.3.2-86009 Update 4
+- Kernel 4.4.302+
+- Tested with a Lexar NQ100 SSD through a UASP-capable USB adapter
+
+## Why this fork exists
+
+On DSM 7.3, Synology's internal `synoboot` device can remain attached to the stock `usb-storage` kernel module.
+
+Because of that, attempting to unload `usb-storage` globally can fail:
+
+`rmmod: ERROR: Module usb_storage is in use`
+
+This fork provides a safer workaround.
+
+Instead of replacing `usb-storage` globally, it keeps:
+
+`synoboot -> usb-storage`
+
+while rebinding only the selected external USB storage device to:
+
+`external USB storage -> uas`
+
+## Verified result
+
+Before:
+
+`08:06:50 2EPs () usb-storage`
+
+After:
+
+`08:06:62 4EPs () uas`
+
+This confirms that the external device is running with UAS/UASP.
+
+## Included scripts
+
+### `scripts/uasp-rebind.sh`
+
+Generic script for safely rebinding one external USB storage device from `usb-storage` to `uas`.
+
+Example:
+
+`sudo /bin/sh scripts/uasp-rebind.sh 14b0 0206 /volumeUSB1/usbshare`
+
+### `examples/uasp-coldboot-emby-prowlarr.sh`
+
+A real cold-boot configuration tested on a DS918+.
+
+It waits for USB storage, switches the SSD to UASP, restores Emby and Prowlarr SSD bind mounts, and then starts Emby, Prowlarr and Container Manager.
+
+This example contains system-specific paths and should be adapted before use on another NAS.
+
+## Important warning
+
+This is experimental and currently tested only on:
+
+**DS918+ / Apollo Lake / DSM 7.3.2-86009 Update 4**
+
+Do not force-unload Synology's `usb-storage` module if `synoboot` is using it.
+
+---
+
+## Original bb-qq documentation
+
 # DSM Driver for UASP-supported USB storage devices
 
 This is the USB Attached SCSI kernel module for Synology NASes.
