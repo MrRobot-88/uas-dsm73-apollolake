@@ -16,7 +16,7 @@ thirdparty="yes"
 PRODUCT_VERSION_WITHOUT_MICRO=`echo ${PRODUCT_VERSION} | sed -E 's/^([0-9]+\.[0-9]+).+$/\1/'`
 if [ 1 -eq $(echo "${PRODUCT_VERSION_WITHOUT_MICRO} >= 7.0" | bc) ]; then
     if [ 1 -eq $(echo "${PRODUCT_VERSION_WITHOUT_MICRO} >= 7.2" | bc) ]; then
-        os_min_ver="7.2-64213"
+        os_min_ver="7.3-86009"
     else
         os_min_ver="7.0-40000"
     fi

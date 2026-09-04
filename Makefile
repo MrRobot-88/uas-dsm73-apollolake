@@ -27,7 +27,7 @@ $(ROOT)/uas.c: /tmp/linux.txz
 
 /tmp/linux.txz:
 	echo $(VERSION) $(VERSION_SUFFIX)
-	curl -k -R -f -o $(@) https://global.synologydownload.com/download/ToolChain/Synology%20NAS%20GPL%20Source/7.2-64570/$(SYNO_PLATFORM_LOWER)/linux-$(VERSION_SUFFIX).txz
+	curl -k -R -f -o $(@) https://global.synologydownload.com/download/ToolChain/Synology%20NAS%20GPL%20Source/7.3-86009/$(SYNO_PLATFORM_LOWER)/linux-$(VERSION_SUFFIX).txz
 
 spk_su: spk_su.c
 	$(CROSS_COMPILE)cc -std=c99 -o $(@) $(<)
